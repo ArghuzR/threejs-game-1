@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>bola basquet</title>
+    <style>
+      html, body { margin: 0; padding: 0; overflow: hidden; }
+    </style>
+  </head>
+  <body>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/89/three.min.js"></script>
+    <script>
+      var scene = new THREE.Scene();
+      var aspect = window.innerWidth / window.innerHeight;
+      var camera = new THREE.PerspectiveCamera( 75, aspect, 0.1, 1000 );
+      var renderer = new THREE.WebGLRenderer();
+      renderer.setSize( window.innerWidth, window.innerHeight );
+      document.body.appendChild( renderer.domElement );
+	  
+	  var loader = new THREE.TextureLoader();
+      var texture = loader.load("balon.jpg");
+	  
+	  var loader = new THREE.TextureLoader();
+      var texture1 = loader.load("pared.jpg");
+	  
+	  var loader = new THREE.TextureLoader();
+      var texture2 = loader.load("h.jpg");
+	  
+	  ///balon
+	  var geometry1 = new THREE.SphereGeometry (1, 24, 9);
+      var material= new THREE.MeshBasicMaterial({map:texture});
+      var balon= new THREE.Mesh( geometry1,material);
+	  
+	  //plataformas
+	  var geometry2 = new THREE.BoxGeometry (8, 2, 5);
+      var material= new THREE.MeshPhongMaterial({map:texture1});
+      var plataforma= new THREE.Mesh( geometry2,material);
+	  
+	  var geometry3 = new THREE.BoxGeometry (8, 4, 5);
+      var material= new THREE.MeshPhongMaterial({map:texture1});
+      var plataforma1= new THREE.Mesh( geometry3,material);
+	  
+	  var geometry4 = new THREE.BoxGeometry (8, 6, 5);
+      var material= new THREE.MeshPhongMaterial({map:texture1});
+      var plataforma2= new THREE.Mesh( geometry4,material);
+	  
+	  var geometry5 = new THREE.BoxGeometry (8, 8, 5);
+      var material= new THREE.MeshPhongMaterial({map:texture1});
+      var plataforma3= new THREE.Mesh( geometry5,material);
+	  
+	  var geometry6 = new THREE.BoxGeometry (8, 10, 5);
+      var material= new THREE.MeshPhongMaterial({map:texture1});
+      var plataforma4= new THREE.Mesh( geometry6,material);
+	  
+	  var geometry7 = new THREE.BoxGeometry (8, 12, 5);
+      var material= new THREE.MeshPhongMaterial({map:texture1});
+      var plataforma5= new THREE.Mesh( geometry7,material);
+	  
+	  var geometry8 = new THREE.BoxGeometry (8, 14, 5);
+      var material= new THREE.MeshPhongMaterial({map:texture1});
+      var plataforma6= new THREE.Mesh( geometry8,material);
+	  
+	  var geometry9 = new THREE.BoxGeometry (8, 1, 60);
+      var material= new THREE.MeshPhongMaterial({map:texture1});
+      var plataforma7= new THREE.Mesh( geometry9,material);
+	  
+	  var geometry10 = new THREE.BoxGeometry (100, 60, 1);
+      var material= new THREE.MeshPhongMaterial({map:texture2});
+      var plataforma8= new THREE.Mesh( geometry10,material);
+	  
+	  plataforma.position.y =-15;
+	
+	  plataforma1.position.y =-14;
+	  plataforma1.position.z =-5;
+	  
+	  plataforma2.position.y=-13;
+	  plataforma2.position.z=-10
+	  
+	  plataforma3.position.y=-12;
+	  plataforma3.position.z=-15
+	  
+	  plataforma4.position.y=-11
+	  plataforma4.position.z=-20
+	  
+	  plataforma5.position.y=-10
+	  plataforma5.position.z=-25
+	  
+	  plataforma6.position.y=-9
+	  plataforma6.position.z=-30
+	  
+	  plataforma7.position.y=-15
+	  plataforma7.position.z=-60
+	  
+	  plataforma8.position.z=-90
+	  plataforma8.position.y=15
+	 
+	  scene.add( balon , plataforma, plataforma1, plataforma2, plataforma3 ,plataforma4, plataforma5, plataforma6, plataforma7, plataforma8);
+	  
+	  camera.position.z = 23;
+	  camera.position.x = 9;
+	  
+	  var a1=new THREE.Vector3(0,-0.7,0);
+	  var v1=new THREE.Vector3(0,0,0)
+	  
+	  var raycaster = new THREE.Raycaster( balon );
+	  var moverD=false;
+	  var moverI=false;
+	  
+	  document.onkeydown=function(e)
+	  {
+	      if(e.keyCode==38)
+		  {
+		     moverD=true;
+		  }
+		  if(e.keyCode==40)
+		  {
+		     moverI=true;
+		  }
+	  }
+	  document,onkeyup=function(e)
+	  {
+	      if(e.keyCode==38)
+		  {
+		     moverD=false;
+		  }
+		  if(e.keyCode==40)
+		  {
+		     moverI=false;
+		  }
+	  }
+	  
+     light = new THREE.PointLight( 0xb4e7f2, 1 );
+	 light.position.y=balon.position.y
+	 light.position.z=balon.position.z
+	 scene.add(light)
+	 
+	 
+var render = function () {
+    requestAnimationFrame( render );
+
+   v1.y=a1.y
+   balon.position.y+=v1.y;
+
+          raycaster= new THREE.Raycaster(balon.position,new THREE.Vector3(0,-1,0));
+		  var intersects = raycaster.intersectObjects( scene.children,true);
+		  if( intersects.length > 0 )
+		  {
+		      if(intersects[0].distance<0.95)
+			  {
+			       a1.y=-a1.y
+			  }
+		  }
+		  
+
+	if(moverD==true)
+	{
+	balon.position.z-=0.05
+	}
+	if(moverI==true)
+	{
+	balon.position.z+=0.05
+	}
+	
+	if(moverD==true)
+	{
+	camera.position.z-=0.05
+	}
+	if(moverI==true)
+	{
+	camera.position.z+=0.05
+	}
+    
+	if((balon.position.y>14))
+     {
+      a1.y=-a1.y
+     }
+	 if((balon.position.z<-90))
+     {
+         alert("final")
+     }
+	 
+     
+
+renderer.clear();
+renderer.render( scene, camera );
+	
+renderer.autoClear = false;
+};
+
+render();
+    </script>
+  </body>
+</html>
